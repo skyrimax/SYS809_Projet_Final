@@ -134,3 +134,6 @@ ProjetSYS809-H2021-LocalisationAutomatique.pdf
 # Séquences d'images
 __MACOSX/
 SYS809_projet2021_sequences1/
+
+# Environnement VSCode
+.vscode/
