@@ -127,3 +127,14 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# Énoncer de lab
+ProjetSYS809-H2021-LocalisationAutomatique.pdf
+
+# Séquences d'images
+__MACOSX/
+#SYS809_projet2021_sequences/
+#Resultats Stitch/
+
+# Environnement VSCode
+.vscode/
