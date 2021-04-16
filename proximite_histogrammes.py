@@ -1,8 +1,6 @@
 import cv2
 import numpy as np
 from keras.utils import np_utils
-from keras.applications.vgg16 import preprocess_input
-from keras.preprocessing import image
 import os
 import matplotlib.pyplot as plt
 
@@ -30,7 +28,7 @@ def load_data(data_path, img_shape):
 
     return data, labels
 
-def proximity_testing(dataset_name="legumes", num_classes=10):
+def proximity_testing(dataset_name="legumes", num_classes=10, nb_bins=8):
     img_shape = [224, 224, 3]
     train_data_path = 'Datasets/' + dataset_name + 'A'
     X_train, y_train = load_data(train_data_path, img_shape)
@@ -49,10 +47,10 @@ def proximity_testing(dataset_name="legumes", num_classes=10):
     for index, test_image in enumerate(X_test):
         differences = []
         for train_image in X_train:
-            hist_train = cv2.calcHist([train_image], [0, 1, 2], None, [256, 256, 256], [0, 256, 0, 256, 0, 256])
+            hist_train = cv2.calcHist([train_image], [0, 1, 2], None, [nb_bins, nb_bins, nb_bins], [0, 256, 0, 256, 0, 256])
             hist_train = cv2.normalize(hist_train, hist_train).flatten()
 
-            hist_test = cv2.calcHist([test_image], [0, 1, 2], None, [256, 256, 256], [0, 256, 0, 256, 0, 256])
+            hist_test = cv2.calcHist([test_image], [0, 1, 2], None, [nb_bins, nb_bins, nb_bins], [0, 256, 0, 256, 0, 256])
             hist_test = cv2.normalize(hist_test, hist_test).flatten()
 
             image_difference = cv2.compareHist(hist_train, hist_test, cv2.HISTCMP_CHISQR)
@@ -79,32 +77,18 @@ def proximity_testing(dataset_name="legumes", num_classes=10):
 
 if __name__ == '__main__':
     
-    proximity_testing("cuisine", 9)
+    nb_bins = 8
     
-    proximity_testing("legumes", 10)
+    proximity_testing("cuisine", 9, nb_bins)
+    
+    proximity_testing("legumes", 10, nb_bins)
 
-    proximity_testing("magasin", 12)
+    proximity_testing("magasin", 12, nb_bins)
 
-    proximity_testing("neige", 10)
+    proximity_testing("neige", 10, nb_bins)
 
-    proximity_testing("studio", 10)
+    proximity_testing("studio", 10, nb_bins)
 
-    proximity_testing("visages", 10)
+    proximity_testing("visages", 10, nb_bins)
 
-    proximity_testing("parc", 10)
-
-    """
-    img = cv2.imread('Datasets/legumesB/00/legumesB-00.jpg')
-
-    color = ('b','g','r')
-    for i,col in enumerate(color):
-        histr = cv2.calcHist([img],[i],None,[8],[0,256])
-        plt.plot(histr, color = col)
-        plt.xlim([0,7])
-    plt.show()
-
-    plt.imshow(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
-    plt.show()
-
-    exit()
-    """
+    proximity_testing("parc", 10, nb_bins)
